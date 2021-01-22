@@ -1,1 +1,71 @@
 PYTHON HOMEWORK CODE
+PY BANK
+
+import os
+import csv
+
+#Create path for CSV
+
+budget_path = os.path.join("Resources", "budget_data.csv")
+
+#Open and Read CSV File
+
+with open(budget_path) as csvfile:
+
+# CSV reader specifies delimiter and variable that holds contents
+    csvreader = csv.reader(csvfile, delimiter=',')
+
+ # Read the header row first so as to not include it in calculations
+    csv_header = next(csvreader)
+
+#Declaring Variables 
+    totalmonths = 0 
+    nettotal = 0
+    greatinc = 0
+    greatdec = 0  
+    preventry= 867884
+    sumforavg = 0 
+    change = int()
+
+#set Loop 
+#Determining total number of months in the dataset 
+    for row in csvreader:
+     
+        totalmonths = totalmonths + 1
+     
+#Convert second column from string to integer 
+
+        row[1] = int(row[1])
+
+#Determine net total amount of "Profit/Loss" over the entire period 
+
+        nettotal = row[1] + nettotal
+
+#Calculate the changes in "Profit/Loss" over the entire period, then find the average of those changes
+
+        change =  row[1] - preventry 
+        preventry = row[1]
+        sumforavg = change + sumforavg
+        
+    avgchange= sumforavg / (totalmonths - 1)
+ 
+#Determine greatest increase in profits (date and amount) over entire period
+
+    if change > greatinc:
+            greatinc = change
+
+#Determine greatest decrease in losses (date and amount) over entire period
+
+    if change < greatdec:
+            greatdec = change
+
+
+#Print your final analysis 
+
+print("Financial Analysis\n")
+print("-------------------------------\n")
+print("Total Months = ",totalmonths)
+print("Total = ",nettotal)
+print("Average Change = ",avgchange)
+print("Greatest Decrease = ",greatdec) 
+print("Greatest Increase = ",greatinc) 
